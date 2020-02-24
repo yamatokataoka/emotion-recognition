@@ -5,6 +5,8 @@ When we give a presentation or a speech, having some feedbacks are essential to 
 
 Looking directly their face expressions is one of the best way to collect robust feedback. Are they smile, angery, or nuetural?
 
+You can see how many people are on each expression in the processed video streaming as a feedback.
+
 <img src="/doc/demo.gif">
 
 # Running the app
