@@ -15,8 +15,13 @@ class Stats extends React.Component {
     this.calculateEmotion = this.calculateEmotion.bind( this );
     this.state = {
       currentEmotion: "Emotion",
-      currentFrameData: [],
-      currentFrameLabels: [],
+      currentEmotionData: [],
+      currentEmotionLabels: [],
+      currentNeutralCount: 0,
+      currentHappyCount: 0,
+      currentSadCount: 0,
+      currentSurpriseCount: 0,
+      currentAngerCount: 0,
     };
   }
 
@@ -34,28 +39,41 @@ class Stats extends React.Component {
       case MQTT.TOPICS.EMOTION:
         this.calculateEmotion( payload );
         break;
+      case MQTT.TOPICS.EMOTIONS:
+        this.calculateEmotions( payload );
+        break;
       default:
         break;
     }
   }
 
   calculateEmotion( input ) {
-    let newLabel = this.state.currentFrameLabels;
-    let newFrameData = this.state.currentFrameData;
-    newLabel.push( input.emotion );
+    let newEmotionLabel = this.state.currentEmotionLabels;
+    let newEmotionData = this.state.currentEmotionData;
+    newEmotionLabel.push( input.emotion );
     if ( input.emotion != undefined ) {
-      newFrameData.push( input.emotion );
+      newEmotionData.push( input.emotion );
     }
-    if ( newFrameData.length > SETTINGS.MAX_POINTS ) {
-      const sliceFrameData = newFrameData.slice( SETTINGS.SLICE_LENGTH );
-      const sliceFrameLabels = newLabel.slice( SETTINGS.SLICE_LENGTH );
-      newFrameData = sliceFrameData;
-      newLabel = sliceFrameLabels;
+    if ( newEmotionData.length > SETTINGS.MAX_POINTS ) {
+      const sliceEmotionData = newEmotionData.slice( SETTINGS.SLICE_LENGTH );
+      const sliceEmotionLabels = newEmotionLabel.slice( SETTINGS.SLICE_LENGTH );
+      newEmotionData = sliceEmotionData;
+      newEmotionLabel = sliceEmotionLabels;
     }
     this.setState( { 
-        currentEmotion: input.emotion,
-        currentFrameLabels: newLabel,
-        currentFrameData: newFrameData 
+      currentEmotion: input.emotion,
+      currentEmotionLabels: newEmotionLabel,
+      currentEmotionData: newEmotionData 
+    } );
+  }
+
+  calculateEmotions( input ) {
+    this.setState( { 
+      currentNeutralCount: input.emotions["neutral"],
+      currentHappyCount: input.emotions["happy"],
+      currentSadCount: input.emotions["sad"],
+      currentSurpriseCount: input.emotions["surprise"],
+      currentAngerCount: input.emotions["anger"],
     } );
   }
 
@@ -64,7 +82,17 @@ class Stats extends React.Component {
     return (
       <div className={ `stats ${ this.props.statsOn ? "active" : "" }` }>
         { /* Current emotion */ }
-        <DataBox title="Emotion" data={ this.state.currentEmotion } color="blue" />
+        <DataBox title="Highlight" data={ this.state.currentEmotion } />
+        { /* Current neutral count */ }
+        <DataBox title="Neutral" data={ this.state.currentNeutralCount } />
+        { /* Current happy count */ }
+        <DataBox title="Happy" data={ this.state.currentHappyCount } />
+        { /* Current sad count */ }
+        <DataBox title="sad" data={ this.state.currentSadCount } />
+        { /* Current surprise count */ }
+        <DataBox title="surprise" data={ this.state.currentSurpriseCount } />
+        { /* Current anger count */ }
+        <DataBox title="anger" data={ this.state.currentAngerCount } />
       </div>
     );
   }

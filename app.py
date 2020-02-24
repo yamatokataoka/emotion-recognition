@@ -14,7 +14,7 @@ CPU_EXTENSION = "/opt/intel/openvino/deployment_tools/inference_engine/lib/intel
 EMOTION_MODEL = "./models/emotions-recognition-retail-0003.xml"
 FACE_MODEL = "./models/face-detection-retail-0004.xml"
 
-EMOTION_LIST = ['neutral', 'happy', 'sad', 'surprise', 'anger']
+EMOTION_LIST = ["neutral", "happy", "sad", "surprise", "anger"]
 
 # MQTT server environment variables
 HOSTNAME = socket.gethostname()
@@ -72,12 +72,23 @@ def infer_on_video(args, models):
         key_pressed = cv2.waitKey(60)
 
         # Pre-process the frame for face detection
-        p_face_frame = cv2.resize(frame, (face_input_shape[3], face_input_shape[2]))
-        p_face_frame = p_face_frame.transpose((2,0,1))
-        p_face_frame = p_face_frame.reshape(1, *p_face_frame.shape)
+        try:
+            p_face_frame = cv2.resize(frame, (face_input_shape[3], face_input_shape[2]))
+            p_face_frame = p_face_frame.transpose((2,0,1))
+            p_face_frame = p_face_frame.reshape(1, *p_face_frame.shape)
+        except Exception as e:
+            break
 
         # Perform face detection inference on the frame
         face_net.async_inference(p_face_frame)
+        
+        emotions = {
+            "neutral": 0,
+            "happy": 0,
+            "sad": 0,
+            "surprise": 0,
+            "anger": 0
+        }
 
         # Get the output of inference
         if face_net.wait() == 0:
@@ -97,9 +108,12 @@ def infer_on_video(args, models):
                     p_emotion_frame = frame[ ymin:ymax, xmin:xmax ]
                     
                     # Pre-process the frame for emotion detection
-                    p_emotion_frame = cv2.resize(p_emotion_frame, (emotion_input_shape[3], emotion_input_shape[2]))
-                    p_emotion_frame = p_emotion_frame.transpose((2,0,1))
-                    p_emotion_frame = p_emotion_frame.reshape(1, *p_emotion_frame.shape)
+                    try:
+                        p_emotion_frame = cv2.resize(p_emotion_frame, (emotion_input_shape[3], emotion_input_shape[2]))
+                        p_emotion_frame = p_emotion_frame.transpose((2,0,1))
+                        p_emotion_frame = p_emotion_frame.reshape(1, *p_emotion_frame.shape)
+                    except Exception as e:
+                        break
                     
                     # Perform face detection inference on the frame
                     emotion_net.async_inference(p_emotion_frame)
@@ -112,8 +126,13 @@ def infer_on_video(args, models):
                         # Add emotion text on frame
                         index_max = np.argmax(emotion_result)
                         
+                        emotions[EMOTION_LIST[index_max]] += 1
+                        
                         # Send the currect emotion to the MQTT server
                         client.publish("emotion", json.dumps({"emotion": EMOTION_LIST[index_max]}))
+                        
+            # Send the currect set of emotions to the MQTT server
+            client.publish("emotions", json.dumps({"emotions": emotions}))
 
         # Send frame to the ffmpeg server
         sys.stdout.buffer.write(out_frame)

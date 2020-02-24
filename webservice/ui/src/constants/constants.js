@@ -15,5 +15,6 @@ export const MQTT = {
   MQTT_SERVER: "wss://" + WS_HOST + "-3002.udacity-student-workspaces.com",
   TOPICS: {
     EMOTION: "emotion", // current emotion
+    EMOTIONS: "emotions", // current emotion
   },
 };

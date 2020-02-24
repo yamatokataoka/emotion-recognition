@@ -5,6 +5,7 @@ const TOGGLE_STATS = "features/stats/TOGGLE_STATS";
 const initialState = {
   statsOn: true,
   currentEmotion: "Emotion",
+  currentEmotions: "Emotions",
 };
 
 
