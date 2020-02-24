@@ -15,6 +15,7 @@ Looking directly their face expressions is one of the best way to collect robust
 - Python 3
 - ffmpeg
 - npm or yarn
+- Node.js
 
 First, get the MQTT broker and UI installed.
 
