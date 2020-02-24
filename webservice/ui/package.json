@@ -1,7 +1,7 @@
 {
-  "name": "vehicle-edge-app",
+  "name": "emotion-edge-app",
   "version": "0.1.0",
-  "description": "Vehicle Edge Application",
+  "description": "Emotion Edge Application",
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --history-api-fallback --watch --hot --inline",
@@ -9,10 +9,10 @@
     "test": "jest"
   },
   "author": "amplified",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/udacity"
+    "url": "https://github.com/yamatokataoka/emotion-recognition"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

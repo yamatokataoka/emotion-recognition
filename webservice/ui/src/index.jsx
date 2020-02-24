@@ -50,7 +50,7 @@ let StatsOn = true;
 render(
   <Provider store={ store }>
     <ConnectedRouter history={ history }>
-      <div className="vehicle-app-container">
+      <div className="emotion-app-container">
         <Route component={ ConnectedNavigation } />
         <ConnectedLog />
         <Route exact path="/" component={ Monitor } />

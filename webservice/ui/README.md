@@ -1,4 +1,4 @@
-# Vehicle Edge App
+# Emotion Edge App
 
 Based on the Amplified starter kit, which uses...
 

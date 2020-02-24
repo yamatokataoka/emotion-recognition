@@ -1,4 +1,4 @@
-# vehicle-edge-app
+# emotion-edge-app
 
 ## Launching the server
 Tested on Node versions 4.2.6 and 8.5.
@@ -17,7 +17,7 @@ node ./server.js
 ~~~~
 
 ## MQTT
-Mosca MQTT broker is automatically started on port 1883.  This can be changed in the configuration file.
+Mosca MQTT broker is automatically started on port 3002.  This can be changed in the configuration file.
 For testing or debugging the MQTT broker, if necessary, you can use:
  * [mosquitto-clients](https://mosquitto.org/download/)
  * [mqtt-spy](http://kamilfb.github.io/mqtt-spy/)

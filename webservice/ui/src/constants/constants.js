@@ -1,3 +1,4 @@
+// for udacity workspace
 const WS_HOST = window.location.hostname.split(".")[0].slice(0,-5)
 
 export const SETTINGS = {
