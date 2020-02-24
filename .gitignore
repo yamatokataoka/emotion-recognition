@@ -1,0 +1,8 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# python notebook
+.ipynb_checkpoints/
+__pycache__/
