@@ -82,7 +82,7 @@ def infer_on_video(args, models):
         # Perform face detection inference on the frame
         face_net.async_inference(p_face_frame)
         
-        emotions = {
+        emotion_results = {
             "neutral": 0,
             "happy": 0,
             "sad": 0,
@@ -123,16 +123,16 @@ def infer_on_video(args, models):
                         emotion_result = emotion_net.extract_output()
                         emotion_result = np.squeeze(emotion_result)
                         
-                        # Add emotion text on frame
+                        # Get the index of max
                         index_max = np.argmax(emotion_result)
                         
-                        emotions[EMOTION_LIST[index_max]] += 1
-                        
-                        # Send the currect emotion to the MQTT server
-                        client.publish("emotion", json.dumps({"emotion": EMOTION_LIST[index_max]}))
-                        
+                        emotion_results[EMOTION_LIST[index_max]] += 1
+
+            # Send the currect emotion to the MQTT server
+            client.publish("emotion", json.dumps({"emotion": max(emotion_results, key=emotion_results.get)}))
+
             # Send the currect set of emotions to the MQTT server
-            client.publish("emotions", json.dumps({"emotions": emotions}))
+            client.publish("emotions", json.dumps({"emotions": emotion_results}))
 
         # Send frame to the ffmpeg server
         sys.stdout.buffer.write(out_frame)
@@ -145,6 +145,7 @@ def infer_on_video(args, models):
     # Release the capture and destroy any OpenCV windows
     cap.release()
     cv2.destroyAllWindows()
+
     # Disconnect from MQTT
     client.disconnect()
 
