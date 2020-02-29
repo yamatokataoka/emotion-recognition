@@ -6,3 +6,6 @@ npm-debug.log*
 # python notebook
 .ipynb_checkpoints/
 __pycache__/
+
+# ffmpeg
+fac.ffm

@@ -13,7 +13,7 @@ export const HTTP = {
 };
 
 export const MQTT = {
-  MQTT_SERVER: "wss://" + WS_HOST + "-3002.udacity-student-workspaces.com",
+  MQTT_SERVER: "wss://emotion-recognition-mqtt.herokuapp.com",
   TOPICS: {
     EMOTION: "emotion", // current emotion
     EMOTIONS: "emotions", // current emotion
