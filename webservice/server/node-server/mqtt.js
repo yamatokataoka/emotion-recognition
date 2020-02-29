@@ -9,7 +9,6 @@ module.exports = {
 
     start: function () {
         server = new mosca.Server({
-            port: config.mqtt.port,
             http: config.mqtt.http,
         });
 
