@@ -17,10 +17,8 @@ FACE_MODEL = "./models/face-detection-retail-0004.xml"
 EMOTION_LIST = ["neutral", "happy", "sad", "surprise", "anger"]
 
 # MQTT server environment variables
-HOSTNAME = socket.gethostname()
-IPADDRESS = socket.gethostbyname(HOSTNAME)
-MQTT_HOST = IPADDRESS
-MQTT_PORT = 3001
+MQTT_HOST = "emotion-recognition-mqtt.herokuapp.com"
+MQTT_PORT = 443
 MQTT_KEEPALIVE_INTERVAL = 60
 
 def get_args():
@@ -41,7 +39,8 @@ def get_args():
 
 def infer_on_video(args, models):
     # Connect to the MQTT server
-    client = mqtt.Client()
+    client = mqtt.Client(transport="websockets")
+    client.tls_set()
     client.connect(MQTT_HOST, port=MQTT_PORT, keepalive=MQTT_KEEPALIVE_INTERVAL)
 
     # Initialize the Inference Engine for two models

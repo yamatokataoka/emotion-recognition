@@ -10,3 +10,6 @@ cp -prf /home/workspace/.ssh ~/
 # git setup
 git config --global user.email "34284486+yamatokataoka@users.noreply.github.com"
 git config --global user.name "yamatokataoka"
+
+# install Heroku
+curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
